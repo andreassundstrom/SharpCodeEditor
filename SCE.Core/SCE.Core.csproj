@@ -8,7 +8,7 @@
     <Title>Sharp Code Editor</Title>
     <PackageProjectUrl></PackageProjectUrl>
     <RepositoryUrl>https://github.com/andreassundstrom/SharpCodeEditor</RepositoryUrl>
-    <SemanticVersion>0.1.0</SemanticVersion>
+    <SemanticVersion>0.2.0</SemanticVersion>
     <Version>$(SemanticVersion)</Version>
     <AssemblyVersion>$(SemanticVersion)</AssemblyVersion>
     <FileVersion>$(SemanticVersion)</FileVersion>
@@ -22,11 +22,20 @@
     <TSOutput Include="Components\*.js" />
   </ItemGroup>
   <ItemGroup>
+    <Content Remove="assets\package.json" />
+    <Content Remove="assets\tsconfig.json" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.12" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="assets\package.json" />
+    <None Include="assets\tsconfig.json" />
   </ItemGroup>
 
   <Target Name="NpmRunBuild" BeforeTargets="BeforeBuild" Inputs="assets/index.ts" Outputs="Components/SharpCodeEditor.razor.js">

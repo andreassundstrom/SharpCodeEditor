@@ -29,4 +29,7 @@
         Code = await js.InvokeAsync<string>("CodeEditor.GetStringValue", guid.ToString());
         return Code;
     }
+    public async Task SetValueAsync(string value){
+        await js.InvokeVoidAsync("CodeEditor.SetStringValue", guid.ToString(), value);
+    }
 }

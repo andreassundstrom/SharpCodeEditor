@@ -12,6 +12,7 @@ declare global {
     interface CodeEditor {
         CreateEditor: (parent: string, initialState: string, schema: any) => void;
         GetStringValue: (parent: string) => string;
+        SetStringValue: (parent: string, value: string) => void;
         Dispose: (parent: string) => void;
         Editors: EditorsMap
     }
@@ -54,6 +55,12 @@ window.CodeEditor = {
     GetStringValue: (parent: string) => {
         var editor : EditorView | undefined = window.CodeEditor.Editors[parent];
         return editor.state.doc.toString();
+    },
+    SetStringValue: (parent: string, value: string) => {
+        var editor: EditorView | undefined = window.CodeEditor.Editors[parent];
+
+        editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: value } })
+        
     },
     Dispose: (parent: string) => {
         delete window.CodeEditor.Editors[parent];

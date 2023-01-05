@@ -9,15 +9,19 @@ Lägg till referens till javascript-bibliotek i index.html:
 <div class="d-flex">
     <div class="w-50 d-flex flex-column me-1">
         <h4>Textvalue</h4>
+        <input @bind-value=@initialCode style="height:400px"/>
         <pre class="mb-2">@initialCode</pre>
-        <button class="btn btn-primary" @onclick=GetText>Uppdatera</button>
+        <div class="d-flex">
+            <button class="btn btn-primary" @onclick=GetText>Get text</button>
+            <button class="btn btn-primary" @onclick=SetText>Set text</button>
+        </div>
     </div>
     <div class="w-50 ms-1 ">
         <h4>Language = Language.SQL</h4>
         @if(Show){
             <SharpCodeEditor @ref=sharpCodeEditor Code=@initialCode Language="Language.SQL" />
         }
-        <button class="btn btn-primary my-2" @onclick=@(() => Show = !Show)>@(Show ? "Add" : "Remove")</button>
+        <button class="btn btn-primary my-2" @onclick=@(() => Show = !Show)>@(Show ? "Remove" : "Add")</button>
     </div>
 </div>
 @code{
@@ -27,6 +31,9 @@ Lägg till referens till javascript-bibliotek i index.html:
 
     public async Task GetText(){
         initialCode = await sharpCodeEditor.GetValueAsync();
-        
+    }
+    public async Task SetText()
+    {
+        await sharpCodeEditor.SetValueAsync(initialCode);
     }
 }
