@@ -4,6 +4,14 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Sharp Code Editor</Title>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/andreassundstrom/SharpCodeEditor</RepositoryUrl>
+    <SemanticVersion>0.1.0</SemanticVersion>
+    <Version>$(SemanticVersion)</Version>
+    <AssemblyVersion>$(SemanticVersion)</AssemblyVersion>
+    <FileVersion>$(SemanticVersion)</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <SupportedPlatform Include="browser" />
