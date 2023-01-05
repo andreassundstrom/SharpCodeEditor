@@ -10,7 +10,7 @@ enum Language {
 }
 declare global {
     interface CodeEditor {
-        CreateEditor: (parent: string, initialState: string, schema: any) => void;
+        CreateEditor: (parent: string, initialState: string, schema: any, theme: any) => void;
         GetStringValue: (parent: string) => string;
         SetStringValue: (parent: string, value: string) => void;
         Dispose: (parent: string) => void;
@@ -23,7 +23,7 @@ declare global {
 
 window.CodeEditor = {
     Editors: {},
-    CreateEditor: (parent: string, textInput: string, schema?: any, language?: Language) => {
+    CreateEditor: (parent: string, textInput: string, schema?: any, language?: Language, theme?: any) => {
         var extensions : Array<any> = [basicSetup];
         if (language == Language.SQL) {
             var defaultConfig: SQLConfig = {
@@ -35,7 +35,9 @@ window.CodeEditor = {
 
             extensions.push(sql(defaultConfig));
         }
-        
+        if (theme) {
+            extensions.push(EditorView.theme(theme));
+        }
         var initialState = EditorState.create({
             doc: textInput,
             extensions: extensions

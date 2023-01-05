@@ -25,3 +25,27 @@ public async Task GetText(){
     
 }
 ````
+
+## Theme
+See the CodeMirror [styling guide](https://codemirror.net/examples/styling/) for reference. Use 
+
+````csharp
+    Dictionary<string, Dictionary<string, string>> theme = new (){
+             {"&", new(){ { "maxHeight", "300px" } } },
+             {".cm-scroller", new(){{ "overflow", "auto"} } } 
+        };
+````
+````html
+<SharpCodeEditor Theme=@theme />
+````
+Results in the following theme being applied:
+````js
+{
+    "&" {
+        maxHeight: "300px"
+    },
+    ".cm-scroller"{
+        overflow:"auto"
+    }
+}
+````

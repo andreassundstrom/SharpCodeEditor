@@ -8,7 +8,7 @@
     <Title>Sharp Code Editor</Title>
     <PackageProjectUrl></PackageProjectUrl>
     <RepositoryUrl>https://github.com/andreassundstrom/SharpCodeEditor</RepositoryUrl>
-    <SemanticVersion>0.2.0</SemanticVersion>
+    <SemanticVersion>0.3.0</SemanticVersion>
     <Version>$(SemanticVersion)</Version>
     <AssemblyVersion>$(SemanticVersion)</AssemblyVersion>
     <FileVersion>$(SemanticVersion)</FileVersion>

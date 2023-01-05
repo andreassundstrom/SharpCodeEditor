@@ -9,6 +9,8 @@
     public Dictionary<string, string[]> Schema { get; set; } = new Dictionary<string, string[]>();
     [Parameter]
     public Language? Language { get; set; } = null;
+    [Parameter]
+    public Dictionary<string, Dictionary<string, string>> Theme { get; set; } = new();
     private Guid guid = Guid.NewGuid();
     protected override bool ShouldRender() => false;
 
@@ -19,7 +21,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender)
-            await js.InvokeVoidAsync("CodeEditor.CreateEditor", guid.ToString(), Code, Schema, Language);
+            await js.InvokeVoidAsync("CodeEditor.CreateEditor", guid.ToString(), Code, Schema, Language,Theme);
     }
     public void Dispose(){
         js.InvokeVoidAsync("CodeEditor.Dispose", guid.ToString());

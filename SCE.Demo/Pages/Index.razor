@@ -19,7 +19,11 @@ Lägg till referens till javascript-bibliotek i index.html:
     <div class="w-50 ms-1 ">
         <h4>Language = Language.SQL</h4>
         @if(Show){
-            <SharpCodeEditor @ref=sharpCodeEditor Code=@initialCode Language="Language.SQL" />
+            <div style="border:1px solid black;">
+                <SharpCodeEditor @ref=sharpCodeEditor Code=@initialCode Language="Language.SQL"
+                />
+            </div>
+            
         }
         <button class="btn btn-primary my-2" @onclick=@(() => Show = !Show)>@(Show ? "Remove" : "Add")</button>
     </div>
@@ -27,7 +31,12 @@ Lägg till referens till javascript-bibliotek i index.html:
 @code{
     SharpCodeEditor sharpCodeEditor;
     bool Show = true;
-    public string initialCode { get; set; } = "SELECT * FROM dbo.People";
+    Dictionary<string, Dictionary<string, string>> theme = new (){
+             {"&", new(){ { "maxHeight", "300px" } } },
+             {".cm-scroller", new(){{ "overflow", "auto"} } } 
+        };
+    public string initialCode { get; set; 
+} = "SELECT * FROM dbo.People";
 
     public async Task GetText(){
         initialCode = await sharpCodeEditor.GetValueAsync();
