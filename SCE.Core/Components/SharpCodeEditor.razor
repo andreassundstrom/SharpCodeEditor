@@ -1,0 +1,32 @@
+﻿@using Microsoft.JSInterop
+@implements IDisposable
+@inject IJSRuntime js
+<div id="@(guid.ToString())"></div>
+@code{
+    [Parameter]
+    public string Code { get; set; } = "";
+    [Parameter]
+    public Dictionary<string, string[]> Schema { get; set; } = new Dictionary<string, string[]>();
+    [Parameter]
+    public Language? Language { get; set; } = null;
+    private Guid guid = Guid.NewGuid();
+    protected override bool ShouldRender() => false;
+
+    [JSInvokable]
+    private void CodeChange(string StringValue){
+        Console.WriteLine(StringValue);
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+            await js.InvokeVoidAsync("CodeEditor.CreateEditor", guid.ToString(), Code, Schema, Language);
+    }
+    public void Dispose(){
+        js.InvokeVoidAsync("CodeEditor.Dispose", guid.ToString());
+    }
+
+    public async Task<string> GetValueAsync(){
+        Code = await js.InvokeAsync<string>("CodeEditor.GetStringValue", guid.ToString());
+        return Code;
+    }
+}

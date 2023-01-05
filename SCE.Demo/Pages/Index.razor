@@ -1,0 +1,32 @@
+﻿@using SCE.Core.Components
+@page "/"
+
+<h1>Code Editor - Demo</h1>
+Lägg till referens till javascript-bibliotek i index.html:
+<pre>
+    @("<script src=\"_content/SCE.Core/Components/SharpCodeEditor.razor.js\"></script>")
+</pre>
+<div class="d-flex">
+    <div class="w-50 d-flex flex-column me-1">
+        <h4>Textvalue</h4>
+        <pre class="mb-2">@initialCode</pre>
+        <button class="btn btn-primary" @onclick=GetText>Uppdatera</button>
+    </div>
+    <div class="w-50 ms-1 ">
+        <h4>Language = Language.SQL</h4>
+        @if(Show){
+            <SharpCodeEditor @ref=sharpCodeEditor Code=@initialCode Language="Language.SQL" />
+        }
+        <button class="btn btn-primary my-2" @onclick=@(() => Show = !Show)>@(Show ? "Add" : "Remove")</button>
+    </div>
+</div>
+@code{
+    SharpCodeEditor sharpCodeEditor;
+    bool Show = true;
+    public string initialCode { get; set; } = "SELECT * FROM dbo.People";
+
+    public async Task GetText(){
+        initialCode = await sharpCodeEditor.GetValueAsync();
+        
+    }
+}

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+    
+  </ItemGroup>
+  <ItemGroup>
+    <TSInput Include="assets\index.ts" />
+    <TSOutput Include="Components\*.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <Target Name="NpmRunBuild" BeforeTargets="BeforeBuild" Inputs="assets/index.ts" Outputs="Components/SharpCodeEditor.razor.js">
+    <Exec Command="npm run build:$(Configuration)" WorkingDirectory="assets\" />
+  </Target>
+</Project>
