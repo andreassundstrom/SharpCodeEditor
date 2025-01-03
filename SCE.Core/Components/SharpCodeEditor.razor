@@ -43,9 +43,8 @@
         if (firstRender)
         {
             _code = Code;
-            await js.InvokeVoidAsync("CodeEditor.CreateEditor", guid.ToString(), _code, Schema, Language, Theme);
             dotNetReference = DotNetObjectReference.Create(this);
-            await js.InvokeVoidAsync("CodeEditor.SetupChangeCallback", guid.ToString(), dotNetReference);
+            await js.InvokeVoidAsync("CodeEditor.CreateEditor", guid.ToString(), _code, dotNetReference, Schema, Language, Theme);
         }
     }
 

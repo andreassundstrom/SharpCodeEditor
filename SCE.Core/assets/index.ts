@@ -2,10 +2,13 @@ import { EditorView, basicSetup } from './node_modules/codemirror/dist/index'
 import { EditorState } from './node_modules/@codemirror/state/dist/index'
 import { sql, SQLConfig, MSSQL } from './node_modules/@codemirror/lang-sql/dist/index'
 
-export { }
+type EditorObject = {
+    editor: EditorView,
+    dotnetReference: DotNetReference
+}
 
 type EditorsMap = {
-    [id: string]: EditorView
+    [id: string]: EditorObject
 }
 
 // Add a type for our .NET reference
@@ -23,17 +26,20 @@ declare global {
         GetStringValue: (parent: string) => string;
         SetStringValue: (parent: string, value: string) => void;
         Dispose: (parent: string) => void;
-        SetupChangeCallback: (parent: string, dotNetRef: DotNetReference) => void;
         Editors: EditorsMap
     }
     interface Window {
         CodeEditor: CodeEditor
     }
+
+    interface EditorView {
+        dotNetRef: string
+    }
 }
 
 window.CodeEditor = {
     Editors: {},
-    CreateEditor: (parent: string, textInput: string, schema?: any, language?: Language, theme?: any) => {
+    CreateEditor: (parent: string, textInput: string, dotNetReference: DotNetReference, schema?: any, language?: Language, theme?: any) => {
         var extensions: Array<any> = [basicSetup];
         if (language == Language.SQL) {
             var defaultConfig: SQLConfig = {
@@ -50,9 +56,9 @@ window.CodeEditor = {
         
         extensions.push(EditorView.updateListener.of((update) => {
             if (update.docChanged) {
-                const editor = window.CodeEditor.Editors[parent];
-                const dotNetRef = (editor as any).dotNetRef;
-                if (dotNetRef) {
+                const editor = window.CodeEditor.Editors[parent]?.editor;
+                const dotNetRef = window.CodeEditor.Editors[parent]?.dotnetReference;
+                if (dotNetRef && editor) {
                     dotNetRef.invokeMethodAsync('CodeChange', editor.state.doc.toString());
                 }
             }
@@ -70,30 +76,34 @@ window.CodeEditor = {
         
         if (!window.CodeEditor.Editors)
             window.CodeEditor.Editors = {};
-        window.CodeEditor.Editors[parent] = editor as EditorView;
-    },
-    
-    SetupChangeCallback: (parent: string, dotNetRef: DotNetReference) => {
-        const editor = window.CodeEditor.Editors[parent];
-        if (editor) {
-            (editor as any).dotNetRef = dotNetRef;
-        }
+
+
+        window.CodeEditor.Editors[parent] = {
+            editor: editor as EditorView,
+            dotnetReference: dotNetReference
+        } as EditorObject;
     },
     
     GetStringValue: (parent: string) => {
-        var editor: EditorView | undefined = window.CodeEditor.Editors[parent];
+        var editor: EditorView | undefined = window.CodeEditor.Editors[parent]?.editor;
+
+        if (editor === undefined) {
+            throw new Error("No editor with id " + parent);
+        }
+
         return editor.state.doc.toString();
     },
     
     SetStringValue: (parent: string, value: string) => {
-        var editor: EditorView | undefined = window.CodeEditor.Editors[parent];
+        var editor: EditorView | undefined = window.CodeEditor.Editors[parent]?.editor;
         if (editor !== undefined) {
             editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: value } })
         }
-        
     },
     
     Dispose: (parent: string) => {
         delete window.CodeEditor.Editors[parent];
     }
 };
+
+export { }
