@@ -14,7 +14,7 @@ var config = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-        path: path.resolve(__dirname, "../components/"),
+        path: path.resolve(__dirname, "../Components/"),
         filename: 'SharpCodeEditor.razor.js'
     }
 };

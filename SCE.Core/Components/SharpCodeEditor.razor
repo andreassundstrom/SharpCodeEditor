@@ -51,7 +51,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        if (_code != Code)
+        if (_code != Code && CodeChanged.HasDelegate)
         {
             _code = Code;
             await UpdateEditorValueAsync(Code);
@@ -60,14 +60,7 @@
 
     private async Task UpdateEditorValueAsync(string value)
     {
-        try
-        {
-            await js.InvokeVoidAsync("CodeEditor.SetStringValue", guid.ToString(), value);
-        }
-        catch
-        {
-            // Handle case where editor isn't initialized yet
-        }
+       await js.InvokeVoidAsync("CodeEditor.SetStringValue", guid.ToString(), value);
     }
 
     public async void Dispose()

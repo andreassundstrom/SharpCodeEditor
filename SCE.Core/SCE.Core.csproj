@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="assets\package.json" />
+    <None Include="assets\package.jsonsudon" />
     <None Include="assets\tsconfig.json" />
   </ItemGroup>
 

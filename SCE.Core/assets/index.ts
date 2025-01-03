@@ -47,12 +47,10 @@ window.CodeEditor = {
         if (theme) {
             extensions.push(EditorView.theme(theme));
         }
-
-        // Add the update listener extension
+        
         extensions.push(EditorView.updateListener.of((update) => {
             if (update.docChanged) {
                 const editor = window.CodeEditor.Editors[parent];
-                // Get the dotNetRef stored on the editor instance
                 const dotNetRef = (editor as any).dotNetRef;
                 if (dotNetRef) {
                     dotNetRef.invokeMethodAsync('CodeChange', editor.state.doc.toString());
@@ -78,7 +76,6 @@ window.CodeEditor = {
     SetupChangeCallback: (parent: string, dotNetRef: DotNetReference) => {
         const editor = window.CodeEditor.Editors[parent];
         if (editor) {
-            // Store the dotNetRef on the editor instance
             (editor as any).dotNetRef = dotNetRef;
         }
     },
