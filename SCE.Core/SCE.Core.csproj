@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Title>Sharp Code Editor</Title>
@@ -11,6 +10,7 @@
     <Version>$(SemanticVersion)</Version>
     <AssemblyVersion>$(SemanticVersion)</AssemblyVersion>
     <FileVersion>$(SemanticVersion)</FileVersion>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -25,7 +25,7 @@
     <Content Remove="assets\tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.11" />
   </ItemGroup>
 
   <ItemGroup>
