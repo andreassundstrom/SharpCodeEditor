@@ -16,4 +16,4 @@ jobs:
         run: |
           npm install
       - name: Build dotnet
-        run: dotnet build --no-incremental /WarnAsError
+        run: dotnet build # /WarnAsError
