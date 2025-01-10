@@ -11,8 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build
+      - name: Install node dependencies
         working-directory: SCE.Core/assets
         run: |
           npm install
-          npm run build
+      - name: Build dotnet
+        run: dotnet build --no-incremental /WarnAsError
