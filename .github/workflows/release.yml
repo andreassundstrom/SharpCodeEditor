@@ -18,9 +18,10 @@ jobs:
         run: >
           dotnet pack SCE.Core/SCE.Core.csproj
           /p:SemanticVersion=${{ env.Version }}
-          /p:PAckageID=TestPackages
+          /p:PackageID=TestPackages
           --configuration Release
       - name: Publish
         run: >
           dotnet nuget push "SCE.Core/bin/Release/SCE.Core.${{ env.Version }}.nupkg"
           --api-key ${{ secrets.NUGET_API_KEY }}
+          --source "https://api.nuget.org/v3/index.json"
