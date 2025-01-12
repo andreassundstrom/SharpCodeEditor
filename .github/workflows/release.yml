@@ -1,0 +1,26 @@
+name: Release
+on:
+  release:
+    types: [published]
+jobs:
+  build-and-publish:
+    env:
+      Version: ${{ github.event.release.tag_name }}
+      PackageID: "SharpCodeEditor"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install node dependencies
+        working-directory: SCE.Core/assets
+        run: npm install
+      - name: Pack
+        run: >
+          dotnet pack SCE.Core/SCE.Core.csproj
+          /p:SemanticVersion=${{ env.Version }}
+          /p:PackageID=${{ env.PackageID }}
+          --configuration Release
+      - name: Publish
+        run: >
+          dotnet nuget push "SCE.Core/bin/Release/${{ env.PackageID }}.${{ env.Version }}.nupkg"
+          --api-key ${{ secrets.NUGET_API_KEY }}
+          --source "https://api.nuget.org/v3/index.json"
