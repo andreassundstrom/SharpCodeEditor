@@ -2,36 +2,87 @@
 @implements IDisposable
 @inject IJSRuntime js
 <div id="@(guid.ToString())"></div>
-@code{
+@code {
+    private string _code = "";
+
     [Parameter]
     public string Code { get; set; } = "";
+
+    [Parameter]
+    public EventCallback<string> CodeChanged { get; set; }
+
     [Parameter]
     public Dictionary<string, string[]> Schema { get; set; } = new Dictionary<string, string[]>();
+
     [Parameter]
     public Language? Language { get; set; } = null;
+
     [Parameter]
     public Dictionary<string, Dictionary<string, string>> Theme { get; set; } = new();
+
     private Guid guid = Guid.NewGuid();
+    private DotNetObjectReference<SharpCodeEditor>? dotNetReference;
+
     protected override bool ShouldRender() => false;
 
     [JSInvokable]
-    private void CodeChange(string StringValue){
-        Console.WriteLine(StringValue);
-    }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    public async Task CodeChange(string newValue)
     {
-        if(firstRender)
-            await js.InvokeVoidAsync("CodeEditor.CreateEditor", guid.ToString(), Code, Schema, Language,Theme);
-    }
-    public void Dispose(){
-        js.InvokeVoidAsync("CodeEditor.Dispose", guid.ToString());
+        if (_code != newValue)
+        {
+            _code = newValue;
+            if (CodeChanged.HasDelegate)
+            {
+                await CodeChanged.InvokeAsync(newValue);
+            }
+        }
     }
 
-    public async Task<string> GetValueAsync(){
-        Code = await js.InvokeAsync<string>("CodeEditor.GetStringValue", guid.ToString());
-        return Code;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _code = Code;
+            dotNetReference = DotNetObjectReference.Create(this);
+            await js.InvokeVoidAsync("CodeEditor.CreateEditor", guid.ToString(), _code, dotNetReference, Schema, Language, Theme);
+        }
     }
-    public async Task SetValueAsync(string value){
-        await js.InvokeVoidAsync("CodeEditor.SetStringValue", guid.ToString(), value);
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_code != Code && CodeChanged.HasDelegate)
+        {
+            _code = Code;
+            await UpdateEditorValueAsync(Code);
+        }
+    }
+
+    private async Task UpdateEditorValueAsync(string value)
+    {
+       await js.InvokeVoidAsync("CodeEditor.SetStringValue", guid.ToString(), value);
+    }
+
+    public async void Dispose()
+    {
+        await js.InvokeVoidAsync("CodeEditor.Dispose", guid.ToString());
+        dotNetReference?.Dispose();
+    }
+
+    public async Task<string> GetValueAsync()
+    {
+        return await js.InvokeAsync<string>("CodeEditor.GetStringValue", guid.ToString());
+    }
+
+    public async Task SetValueAsync(string value)
+    {
+        if (_code != value)
+        {
+            _code = value;
+            await UpdateEditorValueAsync(value);
+            if (CodeChanged.HasDelegate)
+            {
+                await CodeChanged.InvokeAsync(value);
+            }
+        }
     }
 }

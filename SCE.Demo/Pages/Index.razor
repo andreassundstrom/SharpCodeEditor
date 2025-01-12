@@ -14,22 +14,32 @@ Lägg till referens till javascript-bibliotek i index.html:
         <div class="d-flex">
             <button class="btn btn-primary" @onclick=GetText>Get text</button>
             <button class="btn btn-primary" @onclick=SetText>Set text</button>
+            <div class="d-flex align-items-center px-2">
+                <input id="bind" type="checkbox" class="form-check-input me-1" @bind-value=@useBinding>
+                <label class="form-check-label" for="bind">Use binding</label>
+            </div>
         </div>
     </div>
     <div class="w-50 ms-1 ">
         <h4>Language = Language.SQL</h4>
         @if(Show){
             <div style="border:1px solid black;">
-                <SharpCodeEditor @ref=sharpCodeEditor Code=@initialCode Language="Language.SQL"
-                />
+                @if (!useBinding){
+                    <SharpCodeEditor Code=@initialCode @ref=sharpCodeEditor Language="Language.SQL" />
+                }
+                else{
+                    <SharpCodeEditor @bind-Code=@initialCode @ref=sharpCodeEditor Language="Language.SQL" />
+                }
+                
             </div>
-            
+
         }
         <button class="btn btn-primary my-2" @onclick=@(() => Show = !Show)>@(Show ? "Remove" : "Add")</button>
     </div>
 </div>
 @code{
     SharpCodeEditor sharpCodeEditor;
+    bool useBinding = false;
     bool Show = true;
     Dictionary<string, Dictionary<string, string>> theme = new (){
              {"&", new(){ { "maxHeight", "300px" } } },

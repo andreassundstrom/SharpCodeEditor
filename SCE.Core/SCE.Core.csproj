@@ -1,17 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>Sharp Code Editor</Title>
     <PackageProjectUrl></PackageProjectUrl>
     <RepositoryUrl>https://github.com/andreassundstrom/SharpCodeEditor</RepositoryUrl>
-    <SemanticVersion>0.3.0</SemanticVersion>
+    <SemanticVersion>1.0.0</SemanticVersion>
     <Version>$(SemanticVersion)</Version>
     <AssemblyVersion>$(SemanticVersion)</AssemblyVersion>
     <FileVersion>$(SemanticVersion)</FileVersion>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -26,7 +25,7 @@
     <Content Remove="assets\tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.11" />
   </ItemGroup>
 
   <ItemGroup>
