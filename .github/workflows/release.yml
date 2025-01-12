@@ -17,5 +17,5 @@ jobs:
       - name: Pack
         run: >
           dotnet pack .\SCE.Core\SCE.Core.csproj
-          /p:SemanticVersion={{ env.Version }}
+          /p:SemanticVersion=${{ env.Version }}
           --configuration Release
