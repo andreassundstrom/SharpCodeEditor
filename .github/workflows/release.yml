@@ -1,0 +1,21 @@
+name: Release
+on:
+  release:
+    types: published
+  push:
+    branches: [release-workflow]
+jobs:
+  build-and-publish:
+    env:
+      Version: "1.0.0"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install node dependencies
+        working-directory: SCE.Core/assets
+        run: npm install
+      - name: Pack
+        run: >
+          dotnet pack .\SCE.Core\SCE.Core.csproj
+          /p:SemanticVersion={{ github.env.Version }}
+          --configuration Release
