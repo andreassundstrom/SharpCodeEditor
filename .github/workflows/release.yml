@@ -13,6 +13,8 @@ jobs:
       - name: Install node dependencies
         working-directory: SCE.Core/assets
         run: npm install
+      - name: Build
+        run: dotnet build SCE.Core/SCE.Core.csproj
       - name: Pack
         run: >
           dotnet pack SCE.Core/SCE.Core.csproj
