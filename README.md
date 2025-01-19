@@ -9,7 +9,7 @@ PM > Install-Package SCE.Core
 
 Add reference to js-file in `index.html`
 ````html
-<script src="_content/SCE.Core/Components/SharpCodeEditor.razor.js"></script>
+<script src="_content/SharpCodeEditor/Components/SharpCodeEditor.razor.js"></script>
 ````
 Use in Razor-file
 ````html
